@@ -62,7 +62,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
 #tabs button.on{background:linear-gradient(#27415f,#1a2a40);color:#fff;box-shadow:inset 0 -3px 0 var(--gold)}
 #tabs img{width:24px;height:24px}
 #tabbody{padding:8px;height:126px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:thin;scrollbar-color:#3b4d68 transparent}
-.card{display:inline-flex;flex-direction:column;align-items:center;justify-content:flex-start;vertical-align:top;width:86px;height:108px;margin-right:5px;padding:4px 2px;
+.card{-webkit-touch-callout:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:flex-start;vertical-align:top;width:86px;height:108px;margin-right:5px;padding:4px 2px;
   background:linear-gradient(#1b2535,#111823);border:1px solid #34475f;border-radius:3px;position:relative;text-align:center;cursor:pointer;overflow:hidden}
 .card:hover{border-color:var(--gold);background:linear-gradient(#24324a,#16202f)}
 .card.sel{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
@@ -119,7 +119,60 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
 @keyframes tin{from{transform:translateY(-8px);opacity:0}to{transform:none;opacity:1}}
 #tip{position:absolute;z-index:6;pointer-events:none!important;background:#080c13f2;border:1px solid var(--goldD);border-radius:3px;padding:8px 10px;max-width:260px;font-size:13px;line-height:17px;white-space:normal}
 #tip b{font-family:var(--fd);color:var(--gold);font-size:16px;font-weight:600}
+#game.touchm #hint{pointer-events:auto!important;padding:9px 16px;border-color:var(--gold)}
 #hint{position:absolute;left:50%;bottom:calc(196px * var(--s));transform:translateX(-50%);background:#0b111bdd;border:1px solid var(--goldD);padding:5px 12px;border-radius:3px;font-size:14px;pointer-events:none!important}
+
+
+/* compact (phone) layout: applied by resize() when the game area is narrower than 700px */
+#obj .oc{display:none}
+.cmp{--s:1;--dh:166px}
+.cmp #resbar{transform:none;left:0;right:0;width:auto;height:40px;padding:0 4px;border-radius:0;border-right:0;overflow-x:auto;scrollbar-width:none}
+.cmp #resbar::-webkit-scrollbar{display:none}
+.cmp #emblem{display:none}
+.cmp #res{flex:1;justify-content:space-between;width:100%}
+.cmp .rs{min-width:0;gap:2px;padding:0 3px;height:34px;flex:none}
+.cmp .rs img{width:15px;height:15px}
+.cmp .rs b{font-size:13px;line-height:15px}
+.cmp .rs i{font-size:9px;line-height:11px;white-space:nowrap}
+.cmp #agebar{transform:none;right:0;top:40px;width:auto;padding:3px 6px 4px 10px;display:flex;align-items:center;gap:8px;border-radius:0 0 0 8px}
+.cmp #agebar .ag img{display:none}
+.cmp #agebar .an{font-size:12px;line-height:14px;white-space:nowrap}
+.cmp #agebar .sn{font-size:10px;line-height:11px;white-space:nowrap}
+.cmp #speed{margin-top:0;gap:3px}
+.cmp #speed button,.cmp .ib{height:26px;min-width:28px;padding:0 4px;font-size:12px}
+.cmp #obj{transform:none;left:0;top:78px;width:auto;max-width:250px;padding:5px 10px;border-radius:0 6px 6px 0;cursor:pointer}
+.cmp #obj h3{margin:0;font-size:13px}
+.cmp #obj .oc{display:inline;font-size:11px;color:var(--mut);font-family:var(--fb);font-weight:700;margin-left:4px}
+.cmp #obj div{font-size:13px;margin:4px 0}
+.cmp #obj:not(.open) div{display:none}
+.cmp #obj.open h3{margin-bottom:4px}
+.cmp #bottom{transform:none;left:0;right:0;max-width:none;display:block}
+.cmp #deck{width:100%;border-radius:0;border-right:0;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+.cmp #tabs button{height:36px;font-size:14px;gap:5px}
+.cmp #tabs img{width:18px;height:18px}
+.cmp #tabbody{padding:6px;height:94px}
+.cmp .card{width:76px;height:92px;margin-right:4px;padding:3px 2px}
+.cmp .card .ic{width:60px;height:44px}
+.cmp .card .ic img{max-width:60px;max-height:44px}
+.cmp .card .nm{font-size:11px;line-height:12px;height:24px}
+.cmp .card .cs{font-size:10px;gap:3px}
+.cmp .card .cs img{width:11px;height:11px}
+.cmp .btnrow{flex-direction:row;flex-wrap:wrap;width:236px;gap:4px;margin-right:6px}
+.cmp .btnrow .btn{font-size:12px;padding:5px 8px;flex:1 1 auto}
+.cmp .btnrow.pinfo{flex-direction:column;flex-wrap:nowrap;width:170px;gap:1px;font-size:12px!important}
+.sep{display:inline-block;width:2px;height:80px;background:#243247;margin:0 7px 0 2px;vertical-align:top}
+.cmp #train{display:none}
+.cmp #mini{transform:none;right:0;bottom:var(--dh);width:112px;height:112px;padding:5px;border-radius:8px 0 0 8px;border-right:0}
+.cmp #mm{width:100px;height:100px}
+.cmp #mini .gl{right:8px;top:8px;width:22px;height:22px;line-height:20px;font-size:12px}
+.cmp #sel{transform:none;bottom:var(--dh);box-sizing:border-box;width:calc(100% - 120px);max-width:300px;padding:8px 10px}
+.cmp #sel h4{font-size:16px}
+.cmp #hint{left:8px;transform:none;bottom:calc(var(--dh) + 6px);font-size:13px;max-width:calc(100% - 132px);text-align:center;white-space:normal}
+.cmp #toasts{top:112px}
+.cmp .toast{font-size:13px;padding:5px 10px}
+.cmp .modal{padding:16px 16px}
+.cmp .modal h1{font-size:30px}
+.cmp .modal h2{font-size:22px}
 
 /* overlay menus */
 #ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 40%,#16233acc,#05080dee);z-index:20;padding:16px;box-sizing:border-box}
@@ -827,7 +880,8 @@ function buildTree(kind,vr,season){
   if(kind===1){ // broadleaf
     const h=ri(14,19),rr=ri(8,10);prism(S,0,0,1.8,0,h*.75,6,'bark',[96,64,38]);
     let g=sn?[150,130,110]:[ [66,142,46],[84,156,50],[52,128,58],[110,158,44] ][vr&3],g2=sn?[176,160,140]:[ [100,176,60],[120,180,60],[80,160,72],[150,190,60] ][vr&3];
-    if(season===2){g=[200,120,34];g2=[228,168,48]}
+    if(season===2){const A=[[[204,118,34],[232,170,52]],[[188,64,34],[226,110,44]],[[214,168,40],[240,204,70]],[[170,104,40],[210,150,52]]][vr&3];g=A[0];g2=A[1]}
+    else if(season===0&&(vr&3)===1){g=[238,170,194];g2=[252,218,230]}
     const bl=[[0,0,h+3,rr,rr,rr*.9],[-rr*.6,rr*.3,h-1,rr*.7,rr*.7,rr*.62],[rr*.55,-rr*.25,h,rr*.7,rr*.7,rr*.62],[rr*.1,rr*.55,h-2,rr*.6,rr*.6,rr*.56]];
     for(const b of bl){const e=ell(S,b[0],b[1],b[2],b[3],b[4],b[5],'leaf',g);e.c2=g2}
     const sp=renderSprite(S,36,h+30,18,h+19,{outline:true,ol:.55});sp.ax=18;sp.ay=h+19;return sp}
@@ -1660,8 +1714,11 @@ function stepSim(dt){
   // weather & seasons
   G.wTime-=dt;if(G.wTime<=0){G.wTime=60+Math.random()*80;const s=seasonOf();const r=Math.random();
     G.weather=s===3?(r<.55?'snow':r<.75?'fog':'clear'):s===0?(r<.28?'rain':r<.4?'fog':'clear'):s===1?(r<.14?'rain':r<.22?'storm':'clear'):(r<.36?'rain':r<.55?'fog':r<.62?'storm':'clear')}
-  if(G.weather==='storm'&&Math.random()<dt*.12)G.wFlash=.6;if(G.wFlash>0)G.wFlash-=dt*2.2;
+  if(G.weather==='storm'&&Math.random()<dt*.2)lightningStrike(false);
+  if(G.wQ>0){G.wQ-=dt;if(G.wQ<=0)lightningStrike(true)}
 }
+// each strike bumps a counter; the renderer draws the bolt and the audio plays delayed thunder from it
+function lightningStrike(again){G.wStrike=(G.wStrike|0)+1;if(!again&&Math.random()<.4)G.wQ=.2+Math.random()*.5}
 function seasonOf(){return Math.floor(G.t/SEASON_LEN)%4}
 function yearOf(){return Math.floor(G.t/YEAR_LEN)+1}
 function dayPhase(){return((G.t+DAY_LEN*.3)%DAY_LEN)/DAY_LEN}
@@ -1871,7 +1928,7 @@ function bSprite(b){
 function wallLike(x,y,o){if(!inMap(x,y))return false;const id=G.bmap[IX(x,y)];if(id<=0)return false;const b=G.bById.get(id);return b&&!b.dead&&friendly(o,b.owner)&&(b.type==='wall'||b.type==='gate'||b.type==='tower'||b.type==='keep'||b.type==='castle'||b.type==='fort')}
 function wallMask(b){let m=0;if(wallLike(b.x,b.y-1,b.owner))m|=1;if(wallLike(b.x+1,b.y,b.owner))m|=2;if(wallLike(b.x,b.y+1,b.owner))m|=4;if(wallLike(b.x-1,b.y,b.owner))m|=8;return m}
 function gateAxis(b){return(wallLike(b.x,b.y-1,b.owner)||wallLike(b.x,b.y+1,b.owner))?1:0}
-function treeSprite(kind,vr,season){const key='t'+kind+'_'+vr+'_'+(kind===1||kind===0?season:0);
+function treeSprite(kind,vr,season){const key='t'+kind+'_'+vr+'_'+(kind===TR_PINE||kind===TR_BROAD?season:0);
   if(SPR[key])return SPR[key];let k=kind===TR_PINE?0:kind===TR_BROAD?1:kind===TR_BOULDER?2:kind===TR_DEAD?5:kind===TR_GOLD?7:8;return SPR[key]=buildTree(k,vr,season)}
 function decoSprite(d,vr,season){const key='d'+d+'_'+vr+'_'+season;if(SPR[key])return SPR[key];return SPR[key]=buildTree(d===1?3:4,vr,season)}
 let mtSprites=[];function mtSprite(v){return mtSprites[v]||(mtSprites[v]=buildMountain(v))}
@@ -1899,7 +1956,8 @@ function tileToScreen(tx,ty){return[(sxOf(tx,ty)-CAM.x)*CAM.z+VIEW.W/2,(syOf(tx,
 function clampCam(){const W=(MW+MH)*UN,H=(MW+MH)*UN/2;CAM.x=clamp(CAM.x,OX-MW*UN*.95,OX+MW*UN*.95);CAM.y=clamp(CAM.y,H*.1,H*.9)}
 function resize(){const r=document.getElementById('game').getBoundingClientRect();VIEW.dpr=Math.min(window.devicePixelRatio||1,2);VIEW.W=Math.max(300,Math.floor(r.width));VIEW.H=Math.max(300,Math.floor(r.height));
   cv.width=Math.floor(VIEW.W*VIEW.dpr);cv.height=Math.floor(VIEW.H*VIEW.dpr);
-  const s=clamp(Math.min(VIEW.W/1500,VIEW.H/820),.62,1.15);document.getElementById('game').style.setProperty('--s',s.toFixed(3))}
+  const g=document.getElementById('game');const cmp=VIEW.W<700;g.classList.toggle('cmp',cmp);
+  const s=cmp?1:clamp(Math.min(VIEW.W/1500,VIEW.H/820),.62,1.15);g.style.setProperty('--s',s.toFixed(3))}
 
 /* ---------- picking ---------- */
 function pickUnit(mx,my,onlyOwn){
@@ -1922,6 +1980,7 @@ function draw(now,dtReal){
   const W=VIEW.W,H=VIEW.H,z=CAM.z,dpr=VIEW.dpr;
   ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#1b5694';ctx.fillRect(0,0,cv.width,cv.height);
   if(!G||!TERCV)return;
+  wxUpdate(dtReal||.016);
   ctx.imageSmoothingEnabled=false;
   const k=dpr*z;const tx=Math.round((W/2-CAM.x*z)*dpr),ty=Math.round((H/2-CAM.y*z)*dpr);
   ctx.setTransform(k,0,0,k,tx,ty);
@@ -2093,22 +2152,77 @@ function drawNight(night,time,sx0,sy0){
     const a=1-light;const w=G.weather==='storm'||G.weather==='rain'?.08:0;
     ctx.globalCompositeOperation='multiply';const r=Math.round(255-a*150),g=Math.round(255-a*135),b=Math.round(255-a*85);ctx.fillStyle='rgb('+r+','+g+','+b+')';
     const vx0=CAM.x-VIEW.W/2/CAM.z,vy0=CAM.y-VIEW.H/2/CAM.z;ctx.fillRect(vx0,vy0,VIEW.W/CAM.z,VIEW.H/CAM.z);ctx.globalCompositeOperation='source-over'}
-  if(G.weather==='storm'||G.weather==='rain'){const a=G.weather==='storm'?.28:.14;ctx.fillStyle='rgba(40,56,80,'+a+')';ctx.fillRect(CAM.x-VIEW.W/2/CAM.z,CAM.y-VIEW.H/2/CAM.z,VIEW.W/CAM.z,VIEW.H/CAM.z)}
+  if(WX.rain>.01){// overcast: cool grey multiply + blue wash, fading in and out with the weather
+    const vx0=CAM.x-VIEW.W/2/CAM.z,vy0=CAM.y-VIEW.H/2/CAM.z,vw=VIEW.W/CAM.z,vh=VIEW.H/CAM.z;
+    const dm=(WX.rain*.1+WX.storm*.17)*(.4+.6*light);
+    ctx.globalCompositeOperation='multiply';ctx.fillStyle='rgb('+Math.round(255-dm*300)+','+Math.round(255-dm*255)+','+Math.round(255-dm*150)+')';ctx.fillRect(vx0,vy0,vw,vh);ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='rgba(40,56,80,'+(WX.rain*.1+WX.storm*.12).toFixed(3)+')';ctx.fillRect(vx0,vy0,vw,vh)}
   if(light<.8){
     ctx.globalCompositeOperation='lighter';const gl=(1-light)*1.15;ctx.globalAlpha=Math.min(1,gl);
     const vx0=CAM.x-VIEW.W/2/CAM.z-40,vx1=CAM.x+VIEW.W/2/CAM.z+40,vy0=CAM.y-VIEW.H/2/CAM.z-40,vy1=CAM.y+VIEW.H/2/CAM.z+80;
     for(const b of G.bl){if(b.dead||!b.built)continue;const sp=bSprite(b);if(!sp.lights||!sp.lights.length)continue;const bx=sxOf(b.x,b.y)-sp.ox,by=syOf(b.x,b.y)-sp.oy;if(bx<vx0-100||bx>vx1||by<vy0-100||by>vy1)continue;
       for(const l of sp.lights){const r=l[2]*1.8+2;const fl=.85+.15*Math.sin(time*4+l[0]);ctx.globalAlpha=Math.min(1,gl)*fl;ctx.drawImage(GLOW,bx+l[0]-r,by+l[1]-r,r*2,r*2)}}
     for(const u of G.un){if(u.dead||u.owner>=NK&&false)continue;if(UD[u.type].cat==='siege'||u.st==='atk'&&u.atkT>0){const sx=sxOf(u.x,u.y),sy=syOf(u.x,u.y);ctx.globalAlpha=Math.min(1,gl)*.4;ctx.drawImage(GLOW,sx-8,sy-14,16,16)}}
-    ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over'}
-  if(G.wFlash>0){ctx.fillStyle='rgba(240,245,255,'+Math.min(.7,G.wFlash)+')';ctx.fillRect(CAM.x-VIEW.W/2/CAM.z,CAM.y-VIEW.H/2/CAM.z,VIEW.W/CAM.z,VIEW.H/CAM.z)}}
+    ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over'}}
+/* ---------- weather: smooth transitions, layered rain, splashes, cloud shadows, lightning ---------- */
+const WX={rain:0,storm:0,snow:0,fog:0,cloud:.11,ls:0,bolt:null,bt:0,vg:null,vgk:'',blob:null};
+function wxUpdate(dt){const w=G.weather,k=Math.min(1,dt*.45);
+  const T={rain:w==='rain'||w==='storm'?1:0,storm:w==='storm'?1:0,snow:w==='snow'?1:0,fog:w==='fog'?1:0,cloud:w==='storm'?.3:w==='rain'?.2:w==='snow'?.1:w==='fog'?0:.11};
+  for(const q in T)WX[q]+=(T[q]-WX[q])*k}
+function wxBlob(){if(WX.blob)return WX.blob;const c=document.createElement('canvas');c.width=96;c.height=48;const g=c.getContext('2d');
+  g.setTransform(1,0,0,.5,0,0);const gr=g.createRadialGradient(48,48,0,48,48,48);gr.addColorStop(0,'rgba(8,16,34,1)');gr.addColorStop(.5,'rgba(8,16,34,.55)');gr.addColorStop(1,'rgba(8,16,34,0)');
+  g.fillStyle=gr;g.fillRect(0,0,96,96);return WX.blob=c}
+function wxBolt(ks,W,H){const h=(a,b)=>hsh(ks,a,b+60);let x=W*(.12+.76*h(0,0)),y=-10;const main=[[x,y]],br=[];const endY=H*(.4+.35*h(1,0));let i=0;
+  while(y<endY&&i<40){y+=14+h(i,2)*26;x+=(h(i,3)-.5)*46;main.push([x,y]);
+    if(h(i,4)>.78&&br.length<4){const bp=[[x,y]];let bx=x,by=y;const dir=h(i,5)>.5?1:-1;for(let j=0;j<4;j++){bx+=dir*(8+h(i*7+j,6)*16);by+=8+h(i*7+j,7)*16;bp.push([bx,by])}br.push(bp)}
+    i++}
+  return{main,br}}
+function wxStroke(pts,lw,col){ctx.lineWidth=lw;ctx.strokeStyle=col;ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.stroke()}
 function drawWeather(time,dt){
-  const W=VIEW.W,H=VIEW.H;
-  if(G.weather==='rain'||G.weather==='storm'){ctx.strokeStyle='rgba(190,215,240,.5)';ctx.lineWidth=1;ctx.beginPath();const n=G.weather==='storm'?260:150;
-    for(let i=0;i<n;i++){const sp=420+hsh(i,1,9)*260;const x=((hsh(i,2,9)*W*1.3+time*140)%(W*1.3))-30,y=((hsh(i,3,9)*H+time*sp)%H);ctx.moveTo(x,y);ctx.lineTo(x-4,y+11)}ctx.stroke()}
-  else if(G.weather==='snow'){ctx.fillStyle='rgba(255,255,255,.85)';for(let i=0;i<170;i++){const sp=30+hsh(i,1,5)*40;const x=(hsh(i,2,5)*W+Math.sin(time*.7+i)*14+time*10)%W,y=(hsh(i,3,5)*H+time*sp)%H;const s=hsh(i,4,5)>.7?3:2;ctx.fillRect(Math.round(x),Math.round(y),s,s)}}
-  else if(G.weather==='fog'){const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(220,230,236,.5)');g.addColorStop(.6,'rgba(220,230,236,.36)');g.addColorStop(1,'rgba(220,230,236,.52)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='rgba(240,246,250,.12)';for(let i=0;i<7;i++){const x=((i*260+time*14)%(W+400))-200,y=(i*97)%H;ctx.fillRect(x,y,380,50)}}}
+  const W=VIEW.W,H=VIEW.H,area=Math.min(1.5,Math.max(.45,W*H/921600));
+  const rn=WX.rain,st=WX.storm,sn=WX.snow,fg=WX.fog;
+  // drifting cloud shadows, anchored to the world so they slide as the camera pans
+  const cl=WX.cloud*lightLevel();
+  if(cl>.01){const bl=wxBlob(),z=CAM.z,ww=TERCV.width,wh=TERCV.height;ctx.imageSmoothingEnabled=true;
+    for(let i=0;i<64;i++){const bw=320+hsh(i,1,41)*420,wx=((hsh(i,2,41)*(ww+700)+time*(6+hsh(i,3,41)*6))%(ww+700))-350,wy=hsh(i,4,41)*wh;
+      const sw=bw*z,sh=sw*.5,sx=(wx-CAM.x)*z+W/2,sy=(wy-CAM.y)*z+H/2;if(sx+sw/2<0||sx-sw/2>W||sy+sh/2<0||sy-sh/2>H)continue;
+      ctx.globalAlpha=Math.min(1,cl*(.6+.8*hsh(i,5,41)));ctx.drawImage(bl,sx-sw/2,sy-sh/2,sw,sh)}
+    ctx.globalAlpha=1;ctx.imageSmoothingEnabled=false}
+  // storm vignette
+  if(rn>.02){const key=W+'x'+H;if(WX.vgk!==key){const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.3,W/2,H/2,Math.hypot(W,H)*.55);g.addColorStop(0,'rgba(6,12,26,0)');g.addColorStop(1,'rgba(6,12,26,.62)');WX.vg=g;WX.vgk=key}
+    ctx.globalAlpha=Math.min(1,rn*.3+st*.45);ctx.fillStyle=WX.vg;ctx.fillRect(0,0,W,H);ctx.globalAlpha=1}
+  // rain: three parallax layers sharing one wind that gusts harder in a storm
+  if(rn>.02){const wind=.22+.12*Math.sin(time*.23)+st*(.18+.22*Math.max(0,Math.sin(time*.9)));
+    const LY=[[120,8,380,.32],[140,12,560,.52],[64,20,820,.75]];ctx.lineWidth=1;
+    for(let L=0;L<3;L++){const nb=LY[L],n=Math.round(nb[0]*area*(1+st*.8)*Math.min(1,rn*1.2)),len=nb[1],sp=nb[2],P=W+160,Q=H+len*2;
+      ctx.strokeStyle='rgba(200,220,244,'+(nb[3]*rn).toFixed(3)+')';ctx.beginPath();
+      for(let i=0;i<n;i++){const x=Math.floor(((hsh(i,2,9+L)*P-time*sp*wind)%P+P)%P-80)+.5,y=Math.floor((hsh(i,3,9+L)*Q+time*sp)%Q-len)+.5;ctx.moveTo(x+len*wind,y-len);ctx.lineTo(x,y)}
+      ctx.stroke()}
+    // splashes: little flattened rings that bloom and fade on the ground
+    const ns=Math.round(46*area*(1+st*.6)*Math.min(1,rn*1.2)),B=[new Path2D(),new Path2D(),new Path2D()];
+    for(let i=0;i<ns;i++){const per=.55+hsh(i,1,13)*.6,q=time/per+hsh(i,2,13)*7,c=Math.floor(q),p=q-c;const x=hsh(i,c,14)*W,y=H*.28+hsh(i,c,15)*H*.7,rx=1.5+p*5.5,ry=rx*.42;
+      const pa=B[p<.34?0:p<.67?1:2];pa.moveTo(x+rx,y);pa.ellipse(x,y,rx,ry,0,0,6.283)}
+    const SA=[.6,.4,.22];for(let b=0;b<3;b++){ctx.strokeStyle='rgba(205,222,242,'+(SA[b]*rn).toFixed(3)+')';ctx.stroke(B[b])}}
+  // lightning: a jagged bolt, a flicker and a flash that washes the whole sky
+  const ks=G.wStrike|0;if(ks<WX.ls)WX.ls=ks;
+  if(ks>WX.ls){WX.ls=ks;WX.bolt=wxBolt(ks,W,H);WX.bt=time}
+  if(WX.bolt){const tb=time-WX.bt;
+    if(tb>.75||tb<0)WX.bolt=null;
+    else{const f=tb<.07?1:tb<.12?.3:tb<.2?.95:Math.max(0,1-(tb-.2)*1.9);
+      ctx.fillStyle='rgba(215,225,255,'+(f*.4).toFixed(3)+')';ctx.fillRect(0,0,W,H);
+      ctx.lineJoin='round';const bo=WX.bolt;
+      wxStroke(bo.main,7,'rgba(140,170,255,'+(f*.22).toFixed(3)+')');
+      wxStroke(bo.main,3,'rgba(205,220,255,'+(f*.65).toFixed(3)+')');
+      for(const b of bo.br)wxStroke(b,2,'rgba(205,220,255,'+(f*.55).toFixed(3)+')');
+      wxStroke(bo.main,1.4,'rgba(255,255,255,'+f.toFixed(3)+')');
+      for(const b of bo.br)wxStroke(b,1,'rgba(255,255,255,'+(f*.9).toFixed(3)+')')}}
+  // snow: three depth layers drifting on a slow sway
+  if(sn>.02){const LY=[[60,2,26,.55],[70,2,42,.8],[30,3,68,.95]];
+    for(let L=0;L<3;L++){const nb=LY[L],n=Math.round(nb[0]*area*Math.min(1,sn*1.2)),s=nb[1];ctx.fillStyle='rgba(255,255,255,'+(nb[3]*sn).toFixed(3)+')';
+      for(let i=0;i<n;i++){const sway=Math.sin(time*(.5+hsh(i,5,17+L)*.6)+i)*(8+L*5);const x=(((hsh(i,2,17+L)*W+sway+time*(6+L*4))%W)+W)%W,y=(hsh(i,3,17+L)*H+time*nb[2])%H;ctx.fillRect(Math.floor(x),Math.floor(y),s,s)}}}
+  // fog: soft veil plus slow drifting banks
+  if(fg>.02){ctx.globalAlpha=fg;const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(220,230,236,.5)');g.addColorStop(.6,'rgba(220,230,236,.36)');g.addColorStop(1,'rgba(220,230,236,.52)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(240,246,250,.12)';for(let i=0;i<7;i++){const x=((i*260+time*14)%(W+400))-200,y=(i*97)%H;ctx.fillRect(x,y,380,50)}ctx.globalAlpha=1}}
 function drawMinimap(){
   const c=$('mm'),m=c.getContext('2d');m.imageSmoothingEnabled=false;const S=192/MW;
   m.drawImage(MMBASE,0,0,192,192);
@@ -2227,7 +2341,9 @@ function audioTick(){
   A.water.g.gain.setTargetAtTime(waterNear()*.07*Math.min(1.5,CAM.z),t,.8);
   A.cri.gain.setTargetAtTime(light<.4&&w!=='rain'&&w!=='storm'&&w!=='snow'?.012:0,t,1.5);
   if(light>.6&&w!=='rain'&&w!=='storm'&&CAM.z>1&&t>A.birdT){A.birdT=t+3+rnd()*7;bird()}
-  if(G.wFlash>.5&&!A.th){A.th=1;setTimeout(()=>{A.th=0},4000);const o=aOut(.6,0,AU.ambG);aNoise(o,1.8,'lowpass',500,60,.7,.9,.35);aTone(o,'sine',60,28,1.2,.5,.35)}}
+  const ks=G.wStrike|0;if(ks<(AU.ks|0))AU.ks=ks;
+  if(ks>(AU.ks|0)){AU.ks=ks;const far=hsh(ks,0,5);// light travels faster than sound: thunder trails the flash, longer when the bolt is far
+    setTimeout(()=>{try{if(AU.ctx&&AU.ctx.state==='running'){const o=aOut(.45+.4*(1-far),0,AU.ambG);aNoise(o,1.6+far*1.4,'lowpass',420+(1-far)*500,60,.7,.9,.35+(1-far)*.25);aTone(o,'sine',58,26,1.2+far*.8,.5,.35)}}catch(e){}},220+far*1300)}}
 document.addEventListener('visibilitychange',()=>{const c=AU.ctx;if(!c)return;if(document.hidden)c.suspend();else c.resume()});
 ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,()=>audioInit(),{passive:true}));
 window.addEventListener('pointerdown',e=>{if(e.target.closest&&e.target.closest('button,.card,.tab'))snd('click')},{passive:true});
@@ -2274,9 +2390,11 @@ function renderDeck(){
   if(!G)return;const body=$('tabbody'),K=G.K[0];let h='';
   if(TAB==='build'){for(const ty of BUILD_LIST)h+=cardB(ty)}
   else if(TAB==='units'){
-    h+='<div class="btnrow"><button class="btn" data-act="selAll">'+t('selAll')+'</button><button class="btn" data-act="selIdle">'+t('selIdle')+' (peasants)</button><button class="btn" data-act="stop">'+t('stop')+' (S)</button><button class="btn" data-act="amove">'+t('atkmove')+' (A)</button></div>';
+    if(getComputedStyle($('train')).display==='none'){// narrow screens: the separate training panel is hidden, so train from here
+      const cats=[...$('ucats').children].map(b=>b.dataset.cat);cats.forEach((c,ci)=>{const l=Object.keys(UD).filter(k=>k!=='cart'&&UD[k].cat===c);for(const ty of l)h+=cardU(ty);if(l.length&&ci<cats.length-1)h+='<span class="sep"></span>'})}
+    h+='<div class="btnrow"><button class="btn" data-act="selAll">'+t('selAll')+'</button><button class="btn" data-act="selIdle">'+t('selIdle')+(LANG==='ru'?' (крестьяне)':' (peasants)')+'</button><button class="btn" data-act="stop">'+t('stop')+' (S)</button><button class="btn" data-act="amove">'+t('atkmove')+' (A)</button></div>';
     const cnt={};for(const u of G.un)if(!u.dead&&u.owner===0)cnt[u.type]=(cnt[u.type]||0)+1;
-    h+='<div class="btnrow" style="width:200px;font-size:14px;color:#cfd6e2;white-space:normal"><b class="fd" style="color:var(--gold)">'+(LANG==='ru'?'Население':'Population')+': '+K.pop+'/'+K.popCap+'</b>';
+    h+='<div class="btnrow pinfo" style="width:200px;font-size:14px;color:#cfd6e2;white-space:normal"><b class="fd" style="color:var(--gold)">'+(LANG==='ru'?'Население':'Population')+': '+K.pop+'/'+K.popCap+'</b>';
     for(const k in cnt)h+='<div>'+nm(UD[k])+': <b>'+cnt[k]+'</b></div>';h+='<div style="color:var(--mut)">'+(LANG==='ru'?'Содержание: ':'Upkeep: ')+Math.round(K.upk)+' '+(LANG==='ru'?'з/мин':'g/min')+'</div></div>'}
   else if(TAB==='research'){for(const id of TECH_ORDER)h+=cardT(id)}
   else{
@@ -2289,7 +2407,7 @@ function refreshAfford(){
   for(const c of $('tabbody').querySelectorAll('.card[data-b]')){const d=BD[c.dataset.b];c.classList.toggle('off',K.age<d.age);const cs=c.querySelector('.cs');if(cs)cs.innerHTML=costHTML(d.cost,K);c.classList.toggle('sel',!!PLACE&&PLACE.type===c.dataset.b)}
   for(const c of $('tabbody').querySelectorAll('.card[data-t]')){const id=c.dataset.t,td=TD[id];const done=K.tech[id];const why=!done&&techReq(K,id);c.classList.toggle('done',!!done);c.classList.toggle('off',!done&&!!why);const cs=c.querySelector('.cs');if(cs)cs.innerHTML=done?'':costHTML(td.cost,K);
     let pb=c.querySelector('.pb');if(K.research&&K.research.id===id){if(!pb){pb=document.createElement('div');pb.className='pb';pb.innerHTML='<u></u>';c.appendChild(pb)}pb.firstChild.style.width=(K.research.t/K.research.T*100)+'%'}else if(pb)pb.remove()}
-  for(const c of $('ubody').querySelectorAll('.card[data-u]')){const ty=c.dataset.u,d=UD[ty];const why=canTrainType(0,ty);c.classList.toggle('off',!!why);const cs=c.querySelector('.cs');if(cs)cs.innerHTML=costHTML(d.cost,K);
+  for(const c of document.querySelectorAll('#ubody .card[data-u],#tabbody .card[data-u]')){const ty=c.dataset.u,d=UD[ty];const why=canTrainType(0,ty);c.classList.toggle('off',!!why);const cs=c.querySelector('.cs');if(cs)cs.innerHTML=costHTML(d.cost,K);
     let qn=0;for(const b of G.bl)if(!b.dead&&b.owner===0)for(const q of b.q)if(q.type===ty)qn++;let bd=c.querySelector('.bdg');if(qn){if(!bd){bd=document.createElement('span');bd.className='bdg';c.appendChild(bd)}bd.textContent=qn}else if(bd)bd.remove()}}
 function renderTrain(){
   if(!G)return;let h='';const list=Object.keys(UD).filter(k=>k!=='cart'&&UD[k].cat===UCAT);for(const ty of list)h+=cardU(ty);$('ubody').innerHTML=h;applyTabs();refreshAfford()}
@@ -2332,9 +2450,9 @@ function updateHUD(){
   $('agename').textContent=L(AGES[K.age]);$('seasonname').textContent=t('year')+' '+yearOf()+', '+L(I18[['spring','summer','autumn','winter'][seasonOf()]]);
   const od=[['o1',G.objs[0]],['o2',G.objs[1]],['o3',G.objs[2]],['o4',G.objs[3]]];const bc=G.bl.filter(b=>!b.dead&&b.owner===0&&b.built).length;
   const cs=bldCount(0,'castle',true);
-  $('obj').innerHTML='<h3>'+t('obj')+'</h3>'+od.map((o,i)=>'<div class="'+(o[1]?'done':'')+'"><span class="bx"></span>'+t(o[0])+(i===0?' ('+Math.min(bc,18)+'/18)':i===1?' ('+Math.min(cs,1)+'/1)':i===2?' ('+Math.min(K.pop,100)+'/100)':'')+'</div>').join('');
+  $('obj').innerHTML='<h3>'+t('obj')+'<span class="oc">'+od.filter(o=>o[1]).length+'/4</span></h3>'+od.map((o,i)=>'<div class="'+(o[1]?'done':'')+'"><span class="bx"></span>'+t(o[0])+(i===0?' ('+Math.min(bc,18)+'/18)':i===1?' ('+Math.min(cs,1)+'/1)':i===2?' ('+Math.min(K.pop,100)+'/100)':'')+'</div>').join('');
   for(const b of $('speed').querySelectorAll('button[data-sp]'))b.classList.toggle('on',(G.paused&&b.dataset.sp==='0')||(!G.paused&&+b.dataset.sp===G.speed));
-  const hint=$('hint');if(PLACE){hint.hidden=false;hint.textContent=t('placeHint')}else if(CMDMODE==='attack'){hint.hidden=false;hint.textContent=tl('Attack-move: click a destination','Атака-марш: выберите точку')}else hint.hidden=true;
+  const hint=$('hint'),tm=$('game').classList.contains('touchm');if(PLACE){hint.hidden=false;hint.textContent=tm?(BD[PLACE.type].line?(PLACE.drag?tl('Tap the end point','Тап — конец линии'):tl('Tap the start point','Тап — начало линии')):(PLACE.armed?tl('Tap the building to build','Тап по зданию — построить'):tl('Tap to choose a spot','Тап — выбрать место')))+'  ·  ✕':t('placeHint')}else if(CMDMODE==='attack'){hint.hidden=false;hint.textContent=tl('Attack-move: '+(tm?'tap':'click')+' a destination','Атака-марш: выберите точку')+(tm?'  ·  ✕':'')}else hint.hidden=true;
   refreshAfford();updSelPanel();
   if(TAB==='units'||TAB==='other'){const sg=TAB+K.pop+'|'+K.upk+'|'+G.un.length;if(sg!==lastHud){lastHud=sg;renderDeck()}}
   if(modal==='diplo')renderDiplo();
@@ -2474,7 +2592,7 @@ function startFlow(make,isLoad){
     try{make()}catch(e){console.error(e);modalShell('<h2>Error</h2><p>'+String(e&&e.message)+'</p>');return}
     for(const k in SPR)delete SPR[k];for(const k in _bi)delete _bi[k];for(const k in _ui)delete _ui[k];mtSprites=[];_sc={};
     bakeTerrain(()=>{
-      CAM.x=G.cam0[0];CAM.y=G.cam0[1];CAM.z=CAM.tz=G.camZ||1.6;clearSel();PLACE=null;CMDMODE=null;G.tint=null;
+      CAM.x=G.cam0[0];CAM.y=G.cam0[1];CAM.z=CAM.tz=G.camZ||(VIEW.W<700?1.2:1.6);clearSel();PLACE=null;CMDMODE=null;G.tint=null;
       buildHUD();renderDeck();renderTrain();lastSel='';running=true;closeModal();
       if(!isLoad){uiToast(tl('Build houses, farms and a lumber camp. Peasants will do the work.','Стройте дома, фермы и лесопилку. Крестьяне сделают всю работу.'),'good')}},
       p=>{const e=$('pgb');if(e)e.style.width=(p*100)+'%'})},30)}
@@ -2483,6 +2601,8 @@ function newGameFlow(){startFlow(()=>newGame((Math.random()*1e6|0)+1,DIFFSEL),fa
 function bindUI(){
   document.addEventListener('input',e=>{if(e.target.id==='sVol'){AU.vol=e.target.value/100;audioSave();audioApply()}});
   document.addEventListener('click',e=>{
+    if($('game').classList.contains('cmp')&&e.target.closest('#obj')){$('obj').classList.toggle('open');return}
+    if(e.target.closest('#hint')){if(PLACE)cancelPlace();else CMDMODE=null;return}
     const t_=e.target.closest('[data-tab]');if(t_&&t_.parentNode.id==='tabs'){TAB=t_.dataset.tab;applyTabs();renderDeck();return}
     const c=e.target.closest('#ucats button');if(c){UCAT=c.dataset.cat;renderTrain();return}
     const sp=e.target.closest('#speed button[data-sp]');if(sp){const v=+sp.dataset.sp;if(v===0)G.paused=!G.paused;else{G.paused=false;G.speed=v}return}
@@ -2513,7 +2633,15 @@ function bindUI(){
   });
   // tooltips
   const gm=$('game');
-  gm.addEventListener('pointermove',e=>{const el=e.target.closest&&e.target.closest('.card[data-b],.card[data-u],.card[data-t]');const tp=$('tip');if(el&&G){const h=tipFor(el);if(h)showTip(e,h)}else tp.hidden=true});
+  gm.addEventListener('pointermove',e=>{if(e.pointerType==='touch'){if(LP&&Math.hypot(e.clientX-LPX,e.clientY-LPY)>10){clearTimeout(LP);LP=null}return}const el=e.target.closest&&e.target.closest('.card[data-b],.card[data-u],.card[data-t]');const tp=$('tip');if(el&&G){const h=tipFor(el);if(h)showTip(e,h)}else tp.hidden=true});
+  // touch: long-press a card to read its description (the following tap is swallowed)
+  gm.addEventListener('pointerdown',e=>{LPFIRED=false;clearTimeout(LP);LP=null;if(e.pointerType!=='touch'||!G)return;const tp=$('tip');const el=e.target.closest&&e.target.closest('.card[data-b],.card[data-u],.card[data-t]');if(!el){tp.hidden=true;return}
+    LPX=e.clientX;LPY=e.clientY;LP=setTimeout(()=>{LP=null;const h=tipFor(el);if(!h)return;LPFIRED=true;tp.innerHTML=h;tp.hidden=false;const r=el.getBoundingClientRect(),g=gm.getBoundingClientRect();
+      let x=r.left-g.left+r.width/2-tp.offsetWidth/2;x=Math.max(6,Math.min(g.width-tp.offsetWidth-6,x));tp.style.left=x+'px';tp.style.top=Math.max(6,r.top-g.top-tp.offsetHeight-8)+'px';
+      clearTimeout(TIPT);TIPT=setTimeout(()=>{tp.hidden=true},6000)},420)});
+  for(const ev of['pointerup','pointercancel'])gm.addEventListener(ev,()=>{clearTimeout(LP);LP=null});
+  gm.addEventListener('contextmenu',e=>{if(e.target.closest&&e.target.closest('.card'))e.preventDefault()});
+  document.addEventListener('click',e=>{if(LPFIRED){LPFIRED=false;e.stopPropagation();e.preventDefault()}},true);
   gm.addEventListener('pointerleave',()=>{$('tip').hidden=true});
   // canvas input
   cv.addEventListener('contextmenu',e=>e.preventDefault());
@@ -2528,13 +2656,31 @@ let POINT={down:false,btn:0,x0:0,y0:0,moved:false,pan:false,touch:false,id:0,lt:
 const TOUCHES=new Map();let pinch=0;
 function onDown(e){
   if(!G||!running||modal)return;MOUSE.x=e.offsetX;MOUSE.y=e.offsetY;MOUSE.in=true;
+  $('game').classList.toggle('touchm',e.pointerType==='touch');
   if(e.pointerType==='touch'){TOUCHES.set(e.pointerId,[e.clientX,e.clientY]);if(TOUCHES.size===2){const p=[...TOUCHES.values()];pinch=Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]);POINT.down=false;return}
     POINT={down:true,btn:0,x0:e.offsetX,y0:e.offsetY,moved:false,pan:true,touch:true,id:e.pointerId,lt:performance.now(),lx:e.offsetX,ly:e.offsetY,camx:CAM.x,camy:CAM.y};
-    if(PLACE){const t=screenToTile(e.offsetX,e.offsetY);movePlace(t)}return}
+    if(PLACE){PLACE.px=PLACE.x;PLACE.py=PLACE.y;const t=screenToTile(e.offsetX,e.offsetY);if(!BD[PLACE.type].line||!PLACE.drag)movePlace(t)}return}
   cv.setPointerCapture&&cv.setPointerCapture(e.pointerId);
   POINT={down:true,btn:e.button,x0:e.offsetX,y0:e.offsetY,moved:false,pan:e.button===1,touch:false,id:e.pointerId,lt:0,lx:e.offsetX,ly:e.offsetY,camx:CAM.x,camy:CAM.y};
   if(e.button===0&&PLACE){const d=BD[PLACE.type];const t=screenToTile(e.offsetX,e.offsetY);movePlace(t);if(d.line)PLACE.drag={x:PLACE.x,y:PLACE.y}}
   if(e.button===2)e.preventDefault()}
+let TAPT={t:0,x:0,y:0};let LP=null,LPX=0,LPY=0,LPFIRED=false,TIPT=null;
+/* touch: first tap picks the spot, a second tap on the ghost confirms; walls/bridges use start tap + end tap */
+function touchPlace(mx,my){const d=BD[PLACE.type],t=screenToTile(mx,my);
+  if(d.line){if(!PLACE.drag){movePlace(t);PLACE.drag={x:PLACE.x,y:PLACE.y}}else{movePlace(t);doPlace(false)}return}
+  const cx=(PLACE.px==null?PLACE.x:PLACE.px)+d.w/2,cy=(PLACE.py==null?PLACE.y:PLACE.py)+d.h/2;
+  if(PLACE.armed&&Math.hypot(t[0]-cx,t[1]-cy)<Math.max(d.w,d.h)/2+1.2){PLACE.x=PLACE.px;PLACE.y=PLACE.py;doPlace(false)}
+  else{movePlace(t);PLACE.armed=true}}
+/* touch: with units selected a quick tap is a smart command; long-press selects/deselects (or sets a rally point) */
+function touchTap(mx,my,dur){
+  const now=performance.now();const dbl=now-TAPT.t<320&&Math.hypot(mx-TAPT.x,my-TAPT.y)<28;TAPT={t:now,x:mx,y:my};
+  if(CMDMODE){leftClick(mx,my,false,false);return}
+  const sel=SEL.units.filter(u=>!u.dead&&u.owner===0);
+  if(dur>450){if(sel.length)leftClick(mx,my,false,false);else rightClick(mx,my,false);return}
+  if(sel.length&&!dbl){const u=pickUnit(mx,my),b=u?null:pickBuilding(mx,my);const civ=sel.some(v=>UD[v.type].cat==='civ');
+    const ownUnit=u&&u.owner===0,ownBld=b&&b.owner===0&&!(civ&&(!b.built||BD[b.type].slots));
+    if(!ownUnit&&!ownBld){rightClick(mx,my,false);return}}
+  leftClick(mx,my,false,dbl)}
 function onMove(e){
   if(!G||!running)return;const r=cv.getBoundingClientRect();const mx=e.clientX-r.left,my=e.clientY-r.top;
   if(e.pointerType==='touch'){if(TOUCHES.has(e.pointerId))TOUCHES.set(e.pointerId,[e.clientX,e.clientY]);
@@ -2551,7 +2697,7 @@ function onUp(e){
   if(!G||!running)return;const r=cv.getBoundingClientRect();const mx=e.clientX-r.left,my=e.clientY-r.top;
   if(e.pointerType==='touch'){TOUCHES.delete(e.pointerId);if(TOUCHES.size<2)pinch=0;
     if(POINT.down&&POINT.touch&&POINT.id===e.pointerId){const dur=performance.now()-POINT.lt;POINT.down=false;
-      if(!POINT.moved){if(PLACE){movePlace(screenToTile(mx,my));doPlace(false)}else if(dur>450)rightClick(mx,my,false);else leftClick(mx,my,false,false)}}
+      if(!POINT.moved){if(PLACE)touchPlace(mx,my);else touchTap(mx,my,dur)}else if(PLACE&&!BD[PLACE.type].line)PLACE.armed=true}
     return}
   if(!POINT.down)return;POINT.down=false;
   if(POINT.btn===0){
