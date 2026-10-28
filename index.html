@@ -10,6 +10,8 @@
   --fd:'Pixelify Sans','Courier New',monospace; --fb:'Alegreya Sans','Trebuchet MS',Arial,sans-serif;
   --s:1; color-scheme:dark;
 }
+html,body{overscroll-behavior:none}
+#tabbody,#ubody,.cmp #resbar,.modal{overscroll-behavior:contain}
 html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:15px;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 #game{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg)}
 #cv{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;touch-action:none;display:block;cursor:default}
@@ -1314,7 +1316,7 @@ function destroyBuilding(b,silent){
   if(b.dead)return;b.dead=true;b.hp=0;if(!silent)snd('collapse',b.x+b.w/2,b.y+b.h/2);
   for(let j=0;j<b.h;j++)for(let i=0;i<b.w;i++){const k=IX(b.x+i,b.y+j);if(G.bmap[k]===b.id)G.bmap[k]=0;if(b.type==='bridge'){M.brg[k]=0;G.bridgeDirty=true}}
   for(const u of b.workers)if(!u.dead){u.job=null;u.st='idle'}for(const u of b.builders)if(!u.dead){u.job=null;u.st='idle'}
-  const cx=b.x+b.w/2,cy=b.y+b.h/2;
+  const cx=b.x+b.w/2,cy=b.y+b.h/2;if(!silent)kickShake(cx,cy,2+Math.min(4,b.w*b.h/5));
   for(let i=0;i<b.w*b.h*5;i++)addPart('debris',cx+(Math.random()-.5)*b.w,cy+(Math.random()-.5)*b.h,Math.random()*10,{vz:20+Math.random()*30,life:1+Math.random(),col:Math.random()<.5?[130,126,120]:[110,80,50],size:2});
   for(let i=0;i<b.w*b.h*3;i++)addPart('smoke',cx+(Math.random()-.5)*b.w,cy+(Math.random()-.5)*b.h,4,{life:3+Math.random()*3,size:5+Math.random()*4});
   if(b.type!=='wall'&&b.type!=='bridge'&&b.type!=='gate'||true){G.ruins.push({x:b.x,y:b.y,w:b.w,h:b.h,t:90,id:b.id});if(G.ruins.length>80)G.ruins.shift();
@@ -1357,7 +1359,7 @@ function killUnit(u,by){if(u.dead)return;u.dead=true;u.hp=0;snd('die',u.x,u.y);
   if(u.claim!=null&&G.treeClaim.get(u.claim)===u.id)G.treeClaim.delete(u.claim);
   for(let i=0;i<5;i++)addPart('dust',u.x,u.y,2,{vz:10+Math.random()*14,life:.6+Math.random()*.4,col:[150,40,40],size:1.5,vx:(Math.random()-.5)*1.5,vy:(Math.random()-.5)*1.5});
   if(UD[u.type].cat==='siege')for(let i=0;i<8;i++)addPart('debris',u.x,u.y,4,{vz:20+Math.random()*20,life:1,col:[140,100,60],size:2});
-  G.corpses.push({x:u.x,y:u.y,type:u.type,owner:u.owner,dir:u.dir,t:30});if(G.corpses.length>120)G.corpses.shift();
+  G.corpses.push({x:u.x,y:u.y,type:u.type,owner:u.owner,dir:u.dir,t:30,d0:G.t});if(G.corpses.length>120)G.corpses.shift();
   u.sel=false;G.dirtyPop=true}
 function unitPop(u){return UD[u.type].pop||1}
 function popRoom(k,n){const K=G.K[k];return K.popCap-K.pop>=n}
@@ -1386,7 +1388,7 @@ function hurtBuilding(b,dmg,att){if(b.dead||b.collapse&&false)return;b.hp-=dmg;b
   if(b.owner===0&&att&&G.t-(G.K[0].lastAtt||-99)>12){G.K[0].lastAtt=G.t;toast(tl('Your '+BD[b.type].n[1]+' is under attack!','Ваше здание атаковано: '+BD[b.type].n[0]),'war');snd('horn');G.alert=[b.x+b.w/2,b.y+b.h/2]}
   if(att&&b.owner<NK&&G.K[b.owner].ai){G.K[b.owner].aiState.threat=G.t}
   if(b.hp<=0)destroyBuilding(b)}
-function splashAt(p,x,y){const r=p.splash;snd('boom',x,y);
+function splashAt(p,x,y){const r=p.splash;snd('boom',x,y);kickShake(x,y,2.8);
   for(let i=0;i<10;i++)addPart('debris',x,y,3,{vz:25+Math.random()*25,life:.8,col:[150,140,130],size:2,vx:(Math.random()-.5)*5,vy:(Math.random()-.5)*5});
   for(let i=0;i<5;i++)addPart('dust',x,y,2,{vz:6,life:1,col:[190,170,140],size:3,vx:(Math.random()-.5)*2,vy:(Math.random()-.5)*2});
   for(const u of G.un){if(u.dead||!hostile(p.owner,u.owner))continue;const d=Math.hypot(u.x-x,u.y-y);if(d<r){hurtUnit(u,p.dmg*.45*(1-d/r)*(100/(100+u.def*14)),p.src)}}
@@ -1449,7 +1451,10 @@ function followPath(u,dt){
   const tt=M.ter[IX(Math.floor(u.x),Math.floor(u.y))];let sp=u.spd*(tt===T_ROAD?1.25:1)*dt;
   if(u.slow)sp*=.8;
   if(dl<=sp+.02){u.x=nx;u.y=ny;u.pi++;return u.pi>=u.path.length&&(u.path=null,true)}
-  u.x+=dx/dl*sp;u.y+=dy/dl*sp;setDir(u,dx,dy);u.anim+=dt*u.spd*2.6;return false}
+  u.x+=dx/dl*sp;u.y+=dy/dl*sp;setDir(u,dx,dy);u.anim+=dt*u.spd*2.6;
+  const uc=UD[u.type].cat;if((uc==='cav'||uc==='siege')&&tt!==T_WATER&&Math.random()<dt*(uc==='cav'?7:4))// hooves and wheels kick up dust: tan on dirt and roads, greyer on grass
+    addPart('dust',u.x-dx/dl*.3,u.y-dy/dl*.3,1,{vz:5+Math.random()*4,life:.5+Math.random()*.3,size:2,col:tt===T_GRASS?[168,170,130]:[205,188,156],vx:(Math.random()-.5)*.5,vy:(Math.random()-.5)*.5});
+  return false}
 function setDir(u,dx,dy){const a=Math.atan2(dy,dx);let d=Math.round(a/(Math.PI/2));d=((d%4)+4)%4;u.dir=d}
 function chooseTarget(u){
   const d=UD[u.type];let tg=null;const sight=d.sight;
@@ -1982,7 +1987,8 @@ function draw(now,dtReal){
   if(!G||!TERCV)return;
   wxUpdate(dtReal||.016);
   ctx.imageSmoothingEnabled=false;
-  const k=dpr*z;const tx=Math.round((W/2-CAM.x*z)*dpr),ty=Math.round((H/2-CAM.y*z)*dpr);
+  SHK.a*=Math.pow(.004,dtReal||.016);const sh=SHK.a>.2&&!SHK.off?SHK.a:0;
+  const k=dpr*z;const tx=Math.round((W/2-CAM.x*z+(Math.random()-.5)*2*sh)*dpr),ty=Math.round((H/2-CAM.y*z+(Math.random()-.5)*2*sh)*dpr);
   ctx.setTransform(k,0,0,k,tx,ty);
   // visible world-screen rect
   const vx0=CAM.x-W/2/z,vx1=CAM.x+W/2/z,vy0=CAM.y-H/2/z,vy1=CAM.y+H/2/z;
@@ -1996,6 +2002,14 @@ function draw(now,dtReal){
   // water sparkle
   if(z>.6){ctx.fillStyle='rgba(255,255,255,.55)';for(let y=ty0;y<=ty1;y++)for(let x=tx0;x<=tx1;x++){const i=y*MW+x,t=M.ter[i];if(t!==T_WATER&&t!==T_DEEP)continue;const h=hsh(x,y,77);if(h>.3)continue;
       const sx=sxOf(x+.5,y+.5),sy=syOf(x+.5,y+.5);if(sx<vx0-20||sx>vx1+20||sy<vy0-20||sy>vy1+20)continue;const ph=Math.sin(time*1.4+h*40);if(ph>.55){ctx.fillRect(sx-5+h*12,sy-2+(h*7%4),3,1);ctx.fillRect(sx+2-h*8,sy+1+(h*5%3),2,1)}}}
+  // shore foam: little waves roll in and break on every coast tile
+  if(z>.7){if(!M.shoreL)mkShore();const SL=M.shoreL,SM=M.shore,sp=.4+WX.storm*.4,am=.55+WX.storm*.3;ctx.fillStyle='#f2fbff';
+    for(let q=0;q<SL.length;q++){const i=SL[q],x=i%MW,y=(i/MW)|0;if(x<tx0||x>tx1||y<ty0||y>ty1)continue;
+      const cx=sxOf(x+.5,y+.5),cy=syOf(x+.5,y+.5);if(cx<vx0-20||cx>vx1+20||cy<vy0-14||cy>vy1+14)continue;
+      const h=hsh(x,y,79),p=(time*sp+h)%1,m=SM[i];ctx.globalAlpha=Math.sin(p*3.1416)*am;
+      for(let d=0;d<4;d++){if(!(m>>d&1))continue;const o=SHD[d],k=1-p;const ex=cx+o[0]*(1-k),ey=cy+o[1]*(1-k);
+        for(let s=-3;s<=3;s++)ctx.fillRect(Math.round(ex+s*o[2]),Math.round(ey+s*o[3]),2,1)}}
+    ctx.globalAlpha=1}
   // season tint
   seasonTint(sx0,sy0,sx1,sy1,season);
   // scars & placement ground
@@ -2034,7 +2048,13 @@ function draw(now,dtReal){
      case 4:{const sp=aSprite(o);ctx.drawImage(spriteCanvas(sp,5),Math.round(sxOf(o.x,o.y)-sp.ax),Math.round(syOf(o.x,o.y)-sp.ay));break}
      case 5:drawProj(o);break;
      case 7:{const i=DL.i[j],x=i%MW,y=(i/MW)|0;const ax=M.brg[i]===2?'y':'x';const key='b'+ax;const sp=SPR[key]||(SPR[key]=buildBridge(ax));ctx.drawImage(spriteCanvas(sp,5),Math.round(sxOf(x,y)-sp.ox),Math.round(syOf(x,y)-sp.oy));break}
-     case 8:{const sx=sxOf(o.x,o.y),sy=syOf(o.x,o.y);ctx.globalAlpha=Math.min(1,o.t/10)*.8;ctx.fillStyle=TEAMS[o.owner].mm;ctx.fillRect(Math.round(sx-3),Math.round(sy-1),6,2);ctx.fillStyle='#2a1c14';ctx.fillRect(Math.round(sx-4),Math.round(sy),8,1);ctx.globalAlpha=1;break}
+     case 8:{const sx=sxOf(o.x,o.y),sy=syOf(o.x,o.y);
+       const dp=o.d0===undefined?1:clamp((G.t-o.d0)/.55,0,1);
+       if(dp<1){// the fallen unit crumples to the ground before it becomes a mark; a white flash on impact
+         const sp=uSprite({type:o.type,dir:o.dir,anim:0,st:'idle',atkT:0}),img=spriteCanvas(sp,o.owner),e=dp*dp*(3-2*dp),ws=1+.3*e,hs=1-.74*e;
+         ctx.globalAlpha=1-Math.max(0,dp-.7)/.3*.4;ctx.drawImage(img,Math.round(sx-sp.ax*ws),Math.round(sy-sp.ay*hs),Math.round(img.width*ws),Math.round(img.height*hs));
+         if(dp<.2){ctx.globalCompositeOperation='lighter';ctx.globalAlpha=.5*(1-dp/.2);ctx.drawImage(img,Math.round(sx-sp.ax*ws),Math.round(sy-sp.ay*hs),Math.round(img.width*ws),Math.round(img.height*hs));ctx.globalCompositeOperation='source-over'}}
+       ctx.globalAlpha=Math.min(1,o.t/10)*.8*dp;ctx.fillStyle=TEAMS[o.owner].mm;ctx.fillRect(Math.round(sx-3),Math.round(sy-1),6,2);ctx.fillStyle='#2a1c14';ctx.fillRect(Math.round(sx-4),Math.round(sy),8,1);ctx.globalAlpha=1;break}
      case 10:drawFall(o,time);break}}
   // ghost silhouettes: units hidden behind trees / buildings stay readable
   ctx.globalAlpha=.5;for(let q=0;q<n;q++){const j=order[q];if(DL.t[j]!==3)continue;const u=DL.o[j];if(unitOccluded(u)){const sp=uSprite(u);ctx.drawImage(spriteCanvas(sp,u.owner),Math.round(sxOf(u.x,u.y)-sp.ax),Math.round(syOf(u.x,u.y)-sp.ay))}}ctx.globalAlpha=1;
@@ -2163,8 +2183,12 @@ function drawNight(night,time,sx0,sy0){
     for(const b of G.bl){if(b.dead||!b.built)continue;const sp=bSprite(b);if(!sp.lights||!sp.lights.length)continue;const bx=sxOf(b.x,b.y)-sp.ox,by=syOf(b.x,b.y)-sp.oy;if(bx<vx0-100||bx>vx1||by<vy0-100||by>vy1)continue;
       for(const l of sp.lights){const r=l[2]*1.8+2;const fl=.85+.15*Math.sin(time*4+l[0]);ctx.globalAlpha=Math.min(1,gl)*fl;ctx.drawImage(GLOW,bx+l[0]-r,by+l[1]-r,r*2,r*2)}}
     for(const u of G.un){if(u.dead||u.owner>=NK&&false)continue;if(UD[u.type].cat==='siege'||u.st==='atk'&&u.atkT>0){const sx=sxOf(u.x,u.y),sy=syOf(u.x,u.y);ctx.globalAlpha=Math.min(1,gl)*.4;ctx.drawImage(GLOW,sx-8,sy-14,16,16)}}
+    if(light<.55&&CAM.z>.8&&(G.weather==='clear'||G.weather==='fog')&&seasonOf()!==3)drawFireflies(time,light,vx0,vx1,vy0,vy1);
     ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over'}}
 /* ---------- weather: smooth transitions, layered rain, splashes, cloud shadows, lightning ---------- */
+// camera shake from big impacts: siege hits and collapsing buildings jolt the world (not the HUD); off for reduced-motion users
+const SHK={a:0,off:!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)};
+function kickShake(x,y,amp){if(!G||SHK.off)return;const d=Math.hypot(sxOf(x,y)-CAM.x,syOf(x,y)-CAM.y),f=1-d/460;if(f>0)SHK.a=Math.max(SHK.a,Math.min(6,amp*f))}
 const WX={rain:0,storm:0,snow:0,fog:0,cloud:.11,ls:0,bolt:null,bt:0,vg:null,vgk:'',blob:null};
 function wxUpdate(dt){const w=G.weather,k=Math.min(1,dt*.45);
   const T={rain:w==='rain'||w==='storm'?1:0,storm:w==='storm'?1:0,snow:w==='snow'?1:0,fog:w==='fog'?1:0,cloud:w==='storm'?.3:w==='rain'?.2:w==='snow'?.1:w==='fog'?0:.11};
@@ -2172,6 +2196,34 @@ function wxUpdate(dt){const w=G.weather,k=Math.min(1,dt*.45);
 function wxBlob(){if(WX.blob)return WX.blob;const c=document.createElement('canvas');c.width=96;c.height=48;const g=c.getContext('2d');
   g.setTransform(1,0,0,.5,0,0);const gr=g.createRadialGradient(48,48,0,48,48,48);gr.addColorStop(0,'rgba(8,16,34,1)');gr.addColorStop(.5,'rgba(8,16,34,.55)');gr.addColorStop(1,'rgba(8,16,34,0)');
   g.fillStyle=gr;g.fillRect(0,0,96,96);return WX.blob=c}
+// shore tiles: a bitmask of which sides (x+1, y+1, x-1, y-1) touch land; SHD = edge midpoint offset + dash step on screen
+const SHD=[[8,4,-2,1],[-8,4,2,1],[-8,-4,-2,1],[8,-4,2,1]];
+function mkShore(){const s=new Uint8Array(N),L=[],D=[[1,0],[0,1],[-1,0],[0,-1]];
+  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){const i=y*MW+x;if(M.ter[i]!==T_WATER||M.brg[i])continue;let m=0;
+    for(let d=0;d<4;d++){const nx=x+D[d][0],ny=y+D[d][1];if(nx<0||ny<0||nx>=MW||ny>=MH)continue;const t=M.ter[ny*MW+nx];if(t!==T_WATER&&t!==T_DEEP)m|=1<<d}
+    if(m){s[i]=m;L.push(i)}}
+  M.shore=s;M.shoreL=Int32Array.from(L)}
+// night fireflies: blinking sparks hovering over grass, drawn in the additive light pass
+function drawFireflies(time,light,vx0,vx1,vy0,vy1){
+  const a=Math.min(1,(.55-light)*3.5),CW=80,CH=40;
+  for(let cy=Math.floor(vy0/CH);cy<=Math.ceil(vy1/CH);cy++)for(let cx=Math.floor(vx0/CW);cx<=Math.ceil(vx1/CW);cx++){
+    const h=hsh(cx,cy,91);if(h>.4)continue;
+    const fx=cx*CW+hsh(cx,cy,92)*CW+Math.sin(time*.6+h*30)*14,fy=cy*CH+hsh(cx,cy,93)*CH+Math.cos(time*.5+h*20)*7;
+    const b=Math.sin(time*(1.1+h*3)+h*40);if(b<.1)continue;
+    const ax=(fx-OX)/2,X=Math.floor((fy+ax)/UN),Y=Math.floor((fy-ax)/UN);if(X<0||Y<0||X>=MW||Y>=MH||M.ter[Y*MW+X]!==T_GRASS)continue;
+    ctx.globalAlpha=b*a*.6;ctx.drawImage(GLOW,fx-5,fy-5,10,10);
+    ctx.globalAlpha=b*a;ctx.fillStyle='#e4ff8a';ctx.fillRect(Math.round(fx),Math.round(fy),1,1)}
+  ctx.globalAlpha=1}
+function drawBirds(time,W,H){
+  const z=CAM.z,ww=TERCV.width,wh=TERCV.height,lt=lightLevel();if(lt<.6||seasonOf()===3||z<.7)return;const a=Math.min(1,(lt-.6)*5);
+  for(let f=0;f<3;f++){const fx=((hsh(f,1,51)*(ww+1200)+time*(18+f*5))%(ww+1200))-600,fy=hsh(f,2,51)*wh*.7+wh*.12+Math.sin(time*.15+f*2)*28;
+    for(let b=0;b<6;b++){const r=Math.ceil(b/2),ox=-r*10,oy=b?(b&1?1:-1)*r*5:0,wx=fx+ox,wy=fy+oy;
+      const sx=(wx-CAM.x)*z+W/2,sy=(wy-CAM.y)*z+H/2;if(sx<-30||sx>W+30||sy<-60||sy>H+30)continue;
+      const fl=Math.sin(time*9+b*1.7+f),p=Math.max(2,Math.round(z*1.2)),hy=Math.round(sy),hx=Math.round(sx);
+      ctx.globalAlpha=.16*a;ctx.fillStyle='#10161c';ctx.fillRect(hx+Math.round(8*z),hy+Math.round(30*z),Math.round(4*z),Math.max(1,Math.round(z)));
+      ctx.globalAlpha=.85*a;ctx.fillStyle='#1d1b24';ctx.fillRect(hx,hy,p,p);
+      const up=fl>0?-1:1;for(let s=1;s<=3;s++){const dy=s===1?0:s===2?up*p*.5:up*p;ctx.fillRect(hx-s*p,hy+Math.round(dy),p,p);ctx.fillRect(hx+s*p,hy+Math.round(dy),p,p)}}}
+  ctx.globalAlpha=1}
 function wxBolt(ks,W,H){const h=(a,b)=>hsh(ks,a,b+60);let x=W*(.12+.76*h(0,0)),y=-10;const main=[[x,y]],br=[];const endY=H*(.4+.35*h(1,0));let i=0;
   while(y<endY&&i<40){y+=14+h(i,2)*26;x+=(h(i,3)-.5)*46;main.push([x,y]);
     if(h(i,4)>.78&&br.length<4){const bp=[[x,y]];let bx=x,by=y;const dir=h(i,5)>.5?1:-1;for(let j=0;j<4;j++){bx+=dir*(8+h(i*7+j,6)*16);by+=8+h(i*7+j,7)*16;bp.push([bx,by])}br.push(bp)}
@@ -2188,6 +2240,8 @@ function drawWeather(time,dt){
       const sw=bw*z,sh=sw*.5,sx=(wx-CAM.x)*z+W/2,sy=(wy-CAM.y)*z+H/2;if(sx+sw/2<0||sx-sw/2>W||sy+sh/2<0||sy-sh/2>H)continue;
       ctx.globalAlpha=Math.min(1,cl*(.6+.8*hsh(i,5,41)));ctx.drawImage(bl,sx-sw/2,sy-sh/2,sw,sh)}
     ctx.globalAlpha=1;ctx.imageSmoothingEnabled=false}
+  // birds: V-shaped flocks cross the map on clear days, each with a shadow on the ground
+  if(WX.rain<.05&&WX.fog<.05&&WX.snow<.05&&cl>.01)drawBirds(time,W,H);
   // storm vignette
   if(rn>.02){const key=W+'x'+H;if(WX.vgk!==key){const g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.3,W/2,H/2,Math.hypot(W,H)*.55);g.addColorStop(0,'rgba(6,12,26,0)');g.addColorStop(1,'rgba(6,12,26,.62)');WX.vg=g;WX.vgk=key}
     ctx.globalAlpha=Math.min(1,rn*.3+st*.45);ctx.fillStyle=WX.vg;ctx.fillRect(0,0,W,H);ctx.globalAlpha=1}
@@ -2593,7 +2647,7 @@ function startFlow(make,isLoad){
     for(const k in SPR)delete SPR[k];for(const k in _bi)delete _bi[k];for(const k in _ui)delete _ui[k];mtSprites=[];_sc={};
     bakeTerrain(()=>{
       CAM.x=G.cam0[0];CAM.y=G.cam0[1];CAM.z=CAM.tz=G.camZ||(VIEW.W<700?1.2:1.6);clearSel();PLACE=null;CMDMODE=null;G.tint=null;
-      buildHUD();renderDeck();renderTrain();lastSel='';running=true;closeModal();
+      buildHUD();renderDeck();renderTrain();lastSel='';running=true;tgConfirm(true);closeModal();
       if(!isLoad){uiToast(tl('Build houses, farms and a lumber camp. Peasants will do the work.','Стройте дома, фермы и лесопилку. Крестьяне сделают всю работу.'),'good')}},
       p=>{const e=$('pgb');if(e)e.style.width=(p*100)+'%'})},30)}
 function newGameFlow(){startFlow(()=>newGame((Math.random()*1e6|0)+1,DIFFSEL),false)}
@@ -2757,8 +2811,26 @@ function frame(now){
   mmT+=dtR;if(mmT>.2){mmT=0;drawMinimap();if(G.tick%200<5)buildMinimapBase()}}
 // WASD: A and D conflict with commands, so camera uses arrows + W/S-free scheme: Q/E-less. Provide A/D only when no selection
 window.addEventListener('keydown',e=>{});
+/* ---------- embedded in a messenger: stop swipes from closing, collapsing or reloading the page ---------- */
+// Telegram's web views take a vertical swipe as "close the sheet" unless told otherwise; the bridge object is injected by the app
+function tgSend(name,data){try{const P=window.TelegramWebviewProxy;if(P&&P.postEvent){P.postEvent(name,JSON.stringify(data||{}));return true}}catch(e){}return false}
+function tgInit(){tgSend('web_app_ready');tgSend('web_app_expand');tgSend('web_app_setup_swipe_behavior',{allow_vertical_swipe:false})}
+function tgConfirm(on){tgSend('web_app_setup_closing_behavior',{need_confirmation:!!on})}
+// every touch drag that is not scrolling one of our own lists is swallowed, so nothing chains out to the host page (pull-to-refresh, sheet drag)
+function lockPull(){
+  let ts=null;
+  document.addEventListener('touchstart',e=>{ts=e.touches.length===1?[e.touches[0].clientX,e.touches[0].clientY]:null},{passive:true,capture:true});
+  document.addEventListener('touchmove',e=>{
+    if(!ts||e.touches.length!==1){e.preventDefault();return}
+    const dx=e.touches[0].clientX-ts[0],dy=e.touches[0].clientY-ts[1],hor=Math.abs(dx)>Math.abs(dy);
+    for(let el=e.target;el&&el.nodeType===1&&el!==document.body;el=el.parentElement){
+      const cs=getComputedStyle(el);
+      if(hor){if(/auto|scroll/.test(cs.overflowX)&&el.scrollWidth>el.clientWidth+1&&(dx>0?el.scrollLeft>0:el.scrollLeft<el.scrollWidth-el.clientWidth-1))return}
+      else if(/auto|scroll/.test(cs.overflowY)&&el.scrollHeight>el.clientHeight+1&&(dy>0?el.scrollTop>0:el.scrollTop<el.scrollHeight-el.clientHeight-1))return}
+    e.preventDefault()},{passive:false})}
 function boot(){
   cv=$('cv');ctx=cv.getContext('2d',{alpha:false});
+  lockPull();tgInit();
   mkIcons();resize();bindUI();
   modal='main';$('ov').hidden=false;renderMain();
   requestAnimationFrame(frame)}
